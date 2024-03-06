@@ -1,0 +1,6 @@
+<map id="main" name="main">
+<area shape="rect" id="node1" title=" " alt="" coords="5,56,60,83"/>
+<area shape="rect" id="node2" href="$opensbi__interface_8h.html#a4447e96ba55f78d65763d2500e3e687f" title="Console Write (FID #0)" alt="" coords="126,5,311,32"/>
+<area shape="rect" id="node3" href="$opensbi__interface_8h.html#adb03c6184cd56e051334f2a01524cb64" title="Console Write Byte (FID #2)" alt="" coords="108,56,329,83"/>
+<area shape="rect" id="node4" href="$main_8c.html#a3dcd3b1451461b5871b367ed3a1fad31" title=" " alt="" coords="189,107,248,133"/>
+</map>

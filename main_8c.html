@@ -82,6 +82,8 @@ $(document).ready(function(){initNavTree('main_8c.html',''); initResizable(); })
 </div>
 
 <div class="header">
+  <div class="summary">
+<a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
 <div class="title">main.c File Reference</div>  </div>
 </div><!--header-->
@@ -102,6 +104,14 @@ Include dependency graph for main.c:</div>
 </div>
 </div>
 <p><a href="main_8c_source.html">Go to the source code of this file.</a></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
+Functions</h2></td></tr>
+<tr class="memitem:a3dcd3b1451461b5871b367ed3a1fad31"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8c.html#a3dcd3b1451461b5871b367ed3a1fad31">strlen</a> (const char *_src)</td></tr>
+<tr class="separator:a3dcd3b1451461b5871b367ed3a1fad31"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2c3f6775325c30275d11c6abee2db6a0"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8c.html#a2c3f6775325c30275d11c6abee2db6a0">main</a> (int, char **)</td></tr>
+<tr class="separator:a2c3f6775325c30275d11c6abee2db6a0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>main c </p>
 <dl class="section author"><dt>Author</dt><dd>Zone.N (<a href="#" onclick="location.href='mai'+'lto:'+'Zon'+'e.'+'Niu'+'zh'+'@ho'+'tm'+'ail'+'.c'+'om'; return false;">Zone.<span style="display: none;">.nosp@m.</span>Niuz<span style="display: none;">.nosp@m.</span>h@hot<span style="display: none;">.nosp@m.</span>mail<span style="display: none;">.nosp@m.</span>.com</a>) </dd></dl>
@@ -117,13 +127,114 @@ Include dependency graph for main.c:</div>
 </dd></dl>
 
 <p class="definition">Definition in file <a class="el" href="main_8c_source.html">main.c</a>.</p>
-</div></div><!-- contents -->
+</div><h2 class="groupheader">Function Documentation</h2>
+<a id="a2c3f6775325c30275d11c6abee2db6a0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2c3f6775325c30275d11c6abee2db6a0">&#9670;&nbsp;</a></span>main()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int main </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char **&#160;</td>
+          <td class="paramname">&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="main_8c_source.html#l00027">27</a> of file <a class="el" href="main_8c_source.html">main.c</a>.</p>
+<div class="fragment"><div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;                       {</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;  <a class="code" href="opensbi__interface_8h.html#adb03c6184cd56e051334f2a01524cb64">sbi_debug_console_write_byte</a>(<span class="charliteral">&#39;H&#39;</span>);</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;  <a class="code" href="opensbi__interface_8h.html#adb03c6184cd56e051334f2a01524cb64">sbi_debug_console_write_byte</a>(<span class="charliteral">&#39;e&#39;</span>);</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;  <a class="code" href="opensbi__interface_8h.html#adb03c6184cd56e051334f2a01524cb64">sbi_debug_console_write_byte</a>(<span class="charliteral">&#39;l&#39;</span>);</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;  <a class="code" href="opensbi__interface_8h.html#adb03c6184cd56e051334f2a01524cb64">sbi_debug_console_write_byte</a>(<span class="charliteral">&#39;l&#39;</span>);</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;  <a class="code" href="opensbi__interface_8h.html#adb03c6184cd56e051334f2a01524cb64">sbi_debug_console_write_byte</a>(<span class="charliteral">&#39;o&#39;</span>);</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;  <a class="code" href="opensbi__interface_8h.html#adb03c6184cd56e051334f2a01524cb64">sbi_debug_console_write_byte</a>(<span class="charliteral">&#39;W&#39;</span>);</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;  <a class="code" href="opensbi__interface_8h.html#adb03c6184cd56e051334f2a01524cb64">sbi_debug_console_write_byte</a>(<span class="charliteral">&#39;o&#39;</span>);</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;  <a class="code" href="opensbi__interface_8h.html#adb03c6184cd56e051334f2a01524cb64">sbi_debug_console_write_byte</a>(<span class="charliteral">&#39;r&#39;</span>);</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;  <a class="code" href="opensbi__interface_8h.html#adb03c6184cd56e051334f2a01524cb64">sbi_debug_console_write_byte</a>(<span class="charliteral">&#39;l&#39;</span>);</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;  <a class="code" href="opensbi__interface_8h.html#adb03c6184cd56e051334f2a01524cb64">sbi_debug_console_write_byte</a>(<span class="charliteral">&#39;d&#39;</span>);</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;  <a class="code" href="opensbi__interface_8h.html#adb03c6184cd56e051334f2a01524cb64">sbi_debug_console_write_byte</a>(<span class="charliteral">&#39;!&#39;</span>);</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;  <a class="code" href="opensbi__interface_8h.html#adb03c6184cd56e051334f2a01524cb64">sbi_debug_console_write_byte</a>(<span class="charliteral">&#39;\n&#39;</span>);</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160; </div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;  <span class="keywordtype">char</span> *aaa = <span class="stringliteral">&quot;HelloOpenSBI!\n&quot;</span>;</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160; </div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;  <a class="code" href="opensbi__interface_8h.html#a4447e96ba55f78d65763d2500e3e687f">sbi_debug_console_write</a>(<a class="code" href="main_8c.html#a3dcd3b1451461b5871b367ed3a1fad31">strlen</a>(aaa), (<span class="keywordtype">unsigned</span> <span class="keywordtype">long</span>)aaa &amp; 0xffffffff,</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;                          (<span class="keywordtype">unsigned</span> <span class="keywordtype">long</span>)aaa &gt;&gt; 32);</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;  <span class="keywordflow">return</span> 0;</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;}</div>
+<div class="ttc" id="amain_8c_html_a3dcd3b1451461b5871b367ed3a1fad31"><div class="ttname"><a href="main_8c.html#a3dcd3b1451461b5871b367ed3a1fad31">strlen</a></div><div class="ttdeci">int strlen(const char *_src)</div><div class="ttdef"><b>Definition:</b> <a href="main_8c_source.html#l00019">main.c:19</a></div></div>
+<div class="ttc" id="aopensbi__interface_8h_html_a4447e96ba55f78d65763d2500e3e687f"><div class="ttname"><a href="opensbi__interface_8h.html#a4447e96ba55f78d65763d2500e3e687f">sbi_debug_console_write</a></div><div class="ttdeci">struct sbiret sbi_debug_console_write(unsigned long num_bytes, unsigned long base_addr_lo, unsigned long base_addr_hi)</div><div class="ttdoc">Console Write (FID #0)</div><div class="ttdef"><b>Definition:</b> <a href="opensbi__interface_8c_source.html#l00001">opensbi_interface.c:289</a></div></div>
+<div class="ttc" id="aopensbi__interface_8h_html_adb03c6184cd56e051334f2a01524cb64"><div class="ttname"><a href="opensbi__interface_8h.html#adb03c6184cd56e051334f2a01524cb64">sbi_debug_console_write_byte</a></div><div class="ttdeci">struct sbiret sbi_debug_console_write_byte(uint8_t byte)</div><div class="ttdoc">Console Write Byte (FID #2)</div><div class="ttdef"><b>Definition:</b> <a href="opensbi__interface_8c_source.html#l00001">opensbi_interface.c:303</a></div></div>
+</div><!-- fragment --><div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="main_8c_a2c3f6775325c30275d11c6abee2db6a0_cgraph.png" border="0" usemap="#amain_8c_a2c3f6775325c30275d11c6abee2db6a0_cgraph" alt=""/></div>
+<map name="amain_8c_a2c3f6775325c30275d11c6abee2db6a0_cgraph" id="amain_8c_a2c3f6775325c30275d11c6abee2db6a0_cgraph">
+<area shape="rect" title=" " alt="" coords="5,56,60,83"/>
+<area shape="rect" href="opensbi__interface_8h.html#a4447e96ba55f78d65763d2500e3e687f" title="Console Write (FID #0)" alt="" coords="126,5,311,32"/>
+<area shape="rect" href="opensbi__interface_8h.html#adb03c6184cd56e051334f2a01524cb64" title="Console Write Byte (FID #2)" alt="" coords="108,56,329,83"/>
+<area shape="rect" href="main_8c.html#a3dcd3b1451461b5871b367ed3a1fad31" title=" " alt="" coords="189,107,248,133"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="a3dcd3b1451461b5871b367ed3a1fad31"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3dcd3b1451461b5871b367ed3a1fad31">&#9670;&nbsp;</a></span>strlen()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int strlen </td>
+          <td>(</td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>_src</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="main_8c_source.html#l00019">19</a> of file <a class="el" href="main_8c_source.html">main.c</a>.</p>
+<div class="fragment"><div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;                             {</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;  <span class="keywordtype">int</span> idx = 0;</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;  <span class="keywordflow">while</span> (_src[idx] != <span class="charliteral">&#39;\0&#39;</span>) {</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;    idx++;</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;  }</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;  <span class="keywordflow">return</span> idx;</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;}</div>
+</div><!-- fragment --><div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="main_8c_a3dcd3b1451461b5871b367ed3a1fad31_icgraph.png" border="0" usemap="#amain_8c_a3dcd3b1451461b5871b367ed3a1fad31_icgraph" alt=""/></div>
+<map name="amain_8c_a3dcd3b1451461b5871b367ed3a1fad31_icgraph" id="amain_8c_a3dcd3b1451461b5871b367ed3a1fad31_icgraph">
+<area shape="rect" title=" " alt="" coords="108,5,167,32"/>
+<area shape="rect" href="main_8c.html#a2c3f6775325c30275d11c6abee2db6a0" title=" " alt="" coords="5,5,60,32"/>
+</map>
+</div>
+
+</div>
+</div>
+</div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_13e138d54eb8818da29c3992edef070a.html">test</a></li><li class="navelem"><a class="el" href="main_8c.html">main.c</a></li>
-    <li class="footer">Generated on Tue Mar 5 2024 15:08:41 for opensbi_interface by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Wed Mar 6 2024 14:09:46 for opensbi_interface by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>
