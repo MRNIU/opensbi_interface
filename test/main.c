@@ -16,6 +16,14 @@
 
 #include "opensbi_interface.h"
 
+int strlen(const char *_src) {
+  int idx = 0;
+  while (_src[idx] != '\0') {
+    idx++;
+  }
+  return idx;
+}
+
 int main(int, char **) {
   sbi_debug_console_write_byte('H');
   sbi_debug_console_write_byte('e');
@@ -28,5 +36,11 @@ int main(int, char **) {
   sbi_debug_console_write_byte('l');
   sbi_debug_console_write_byte('d');
   sbi_debug_console_write_byte('!');
+  sbi_debug_console_write_byte('\n');
+
+  char *aaa = "HelloOpenSBI!\n";
+
+  sbi_debug_console_write(strlen(aaa), (unsigned long)aaa & 0xffffffff,
+                          (unsigned long)aaa >> 32);
   return 0;
 }

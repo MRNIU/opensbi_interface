@@ -1,4 +1,3 @@
-[![codecov](https://codecov.io/gh/MRNIU/opensbi_interface/graph/badge.svg?token=WLP53BXX2Z)](https://codecov.io/gh/MRNIU/opensbi_interface)
 ![workflow](https://github.com/MRNIU/opensbi_interface/actions/workflows/workflow.yml/badge.svg)
 ![commit-activity](https://img.shields.io/github/commit-activity/t/MRNIU/opensbi_interface)
 ![last-commit](https://img.shields.io/github/last-commit/MRNIU/opensbi_interface)
