@@ -9,3 +9,5 @@
 # opensbi_interface
 
 interface for opensbi bare metal
+
+SPEC Version: https://github.com/riscv-non-isa/riscv-sbi-doc/releases/tag/v2.0

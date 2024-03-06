@@ -35,6 +35,29 @@ enum {
   SBI_ERR_NO_SHMEM = -9,
 };
 
+// SBI EIDs
+#define SBI_EXT_0_1_SET_TIMER 0x0
+#define SBI_EXT_0_1_CONSOLE_PUTCHAR 0x1
+#define SBI_EXT_0_1_CONSOLE_GETCHAR 0x2
+#define SBI_EXT_0_1_CLEAR_IPI 0x3
+#define SBI_EXT_0_1_SEND_IPI 0x4
+#define SBI_EXT_0_1_REMOTE_FENCE_I 0x5
+#define SBI_EXT_0_1_REMOTE_SFENCE_VMA 0x6
+#define SBI_EXT_0_1_REMOTE_SFENCE_VMA_ASID 0x7
+#define SBI_EXT_0_1_SHUTDOWN 0x8
+#define SBI_EXT_BASE 0x10
+#define SBI_EXT_TIME 0x54494D45
+#define SBI_EXT_IPI 0x735049
+#define SBI_EXT_RFENCE 0x52464E43
+#define SBI_EXT_HSM 0x48534D
+#define SBI_EXT_SRST 0x53525354
+#define SBI_EXT_PMU 0x504D55
+#define SBI_EXT_DBCN 0x4442434E
+#define SBI_EXT_SUSP 0x53555350
+#define SBI_EXT_CPPC 0x43505043
+#define SBI_EXT_NACL 0x4E41434C
+#define SBI_EXT_STA 0x535441
+
 // SBI functions must return a pair of values in a0 and a1, with a0 returning an
 // error code.
 struct sbiret {
@@ -46,6 +69,15 @@ struct sbiret {
 // Base Extension (EID #0x10)
 /// @see
 /// https://github.com/riscv-non-isa/riscv-sbi-doc/blob/master/src/ext-base.adoc
+
+// SBI FIDs
+#define SBI_EXT_BASE_GET_SPEC_VERSION 0x0
+#define SBI_EXT_BASE_GET_IMP_ID 0x1
+#define SBI_EXT_BASE_GET_IMP_VERSION 0x2
+#define SBI_EXT_BASE_PROBE_EXT 0x3
+#define SBI_EXT_BASE_GET_MVENDORID 0x4
+#define SBI_EXT_BASE_GET_MARCHID 0x5
+#define SBI_EXT_BASE_GET_MIMPID 0x6
 
 /**
  * @brief Get SBI specification version (FID #0)
@@ -224,6 +256,9 @@ void sbi_shutdown(void);
 /// @see
 /// https://github.com/riscv-non-isa/riscv-sbi-doc/blob/master/src/ext-time.adoc
 
+// SBI FID for TIME extension
+#define SBI_EXT_TIME_SET_TIMER 0x0
+
 /**
  * @brief Set Timer (FID #0)
  * @param stime_value absolute time
@@ -236,6 +271,9 @@ struct sbiret sbi_set_timer(uint64_t stime_value);
 // IPI Extension (EID #0x735049 "sPI: s-mode IPI")
 /// @see
 /// https://github.com/riscv-non-isa/riscv-sbi-doc/blob/master/src/ext-ipi.adoc
+
+// SBI FID for IPI extension
+#define SBI_EXT_IPI_SEND_IPI 0x0
 
 /**
  * @brief Send IPI (FID #0)
@@ -252,6 +290,15 @@ struct sbiret sbi_send_ipi(unsigned long hart_mask,
 // RFENCE Extension (EID #0x52464E43 "RFNC")
 /// @see
 /// https://github.com/riscv-non-isa/riscv-sbi-doc/blob/master/src/ext-rfence.adoc
+
+// SBI FIDs for RFENCE extension
+#define SBI_EXT_RFENCE_REMOTE_FENCE_I 0x0
+#define SBI_EXT_RFENCE_REMOTE_SFENCE_VMA 0x1
+#define SBI_EXT_RFENCE_REMOTE_SFENCE_VMA_ASID 0x2
+#define SBI_EXT_RFENCE_REMOTE_HFENCE_GVMA_VMID 0x3
+#define SBI_EXT_RFENCE_REMOTE_HFENCE_GVMA 0x4
+#define SBI_EXT_RFENCE_REMOTE_HFENCE_VVMA_ASID 0x5
+#define SBI_EXT_RFENCE_REMOTE_HFENCE_VVMA 0x6
 
 /**
  * @brief Remote FENCE.I (FID #0)
@@ -369,6 +416,12 @@ struct sbiret sbi_remote_hfence_vvma(unsigned long hart_mask,
 /// @see
 /// https://github.com/riscv-non-isa/riscv-sbi-doc/blob/master/src/ext-hsm.adoc
 
+// SBI FIDs for HSM extension
+#define SBI_EXT_HSM_HART_START 0x0
+#define SBI_EXT_HSM_HART_STOP 0x1
+#define SBI_EXT_HSM_HART_GET_STATUS 0x2
+#define SBI_EXT_HSM_HART_SUSPEND 0x3
+
 /**
  * @brief Hart start (FID #0)
  * @param hartid specifies the target hart which is to be started
@@ -449,6 +502,9 @@ struct sbiret sbi_hart_suspend(uint32_t suspend_type, unsigned long resume_addr,
 /// @see
 /// https://github.com/riscv-non-isa/riscv-sbi-doc/blob/master/src/ext-sys-reset.adoc
 
+// SBI FIDs for SRST extension
+#define SBI_EXT_SRST_RESET 0x0
+
 // SRST System Reset Types
 /// @see
 /// https://github.com/riscv-non-isa/riscv-sbi-doc/blob/master/src/ext-sys-reset.adoc#table_srst_system_reset_types
@@ -486,6 +542,16 @@ struct sbiret sbi_system_reset(uint32_t reset_type, uint32_t reset_reason);
 // Performance Monitoring Unit Extension (EID #0x504D55 "PMU")
 /// @see
 /// https://github.com/riscv-non-isa/riscv-sbi-doc/blob/master/src/ext-pmu.adoc
+
+// SBI FIDs for PMU extension
+#define SBI_EXT_PMU_NUM_COUNTERS 0x0
+#define SBI_EXT_PMU_COUNTER_GET_INFO 0x1
+#define SBI_EXT_PMU_COUNTER_CFG_MATCH 0x2
+#define SBI_EXT_PMU_COUNTER_START 0x3
+#define SBI_EXT_PMU_COUNTER_STOP 0x4
+#define SBI_EXT_PMU_COUNTER_FW_READ 0x5
+#define SBI_EXT_PMU_COUNTER_FW_READ_HI 0x6
+#define SBI_EXT_PMU_SNAPSHOT_SET_SHMEM 0x7
 
 // PMU Hardware Events
 /// @see
@@ -705,6 +771,11 @@ struct sbiret sbi_pmu_snapshot_set_shmem(unsigned long shmem_phys_lo,
 /// @see
 /// https://github.com/riscv-non-isa/riscv-sbi-doc/blob/master/src/ext-debug-console.adoc
 
+// SBI FIDs for DBCN extension
+#define SBI_EXT_DEBUG_CONSOLE_WRITE 0x0
+#define SBI_EXT_DEBUG_CONSOLE_READ 0x1
+#define SBI_EXT_DEBUG_CONSOLE_WRITE_BYTE 0x2
+
 /**
  * @brief Console Write (FID #0)
  * @param num_bytes specifies the number of bytes in the input memory
@@ -749,6 +820,9 @@ struct sbiret sbi_debug_console_write_byte(uint8_t byte);
 /// @see
 /// https://github.com/riscv-non-isa/riscv-sbi-doc/blob/master/src/ext-sys-suspend.adoc
 
+// SBI FID for SUSP extension
+#define SBI_EXT_SYSTEM_SUSPEND 0x0
+
 // SUSP System Sleep Types
 /// @see
 /// https://github.com/riscv-non-isa/riscv-sbi-doc/blob/master/src/ext-sys-suspend.adoc#table_susp_sleep_types
@@ -775,6 +849,12 @@ struct sbiret sbi_system_suspend(uint32_t sleep_type, unsigned long resume_addr,
 // CPPC Extension (EID #0x43505043 "CPPC")
 /// @see
 /// https://github.com/riscv-non-isa/riscv-sbi-doc/blob/master/src/ext-cppc.adoc
+
+// SBI FIDs for CPPC extension
+#define SBI_EXT_CPPC_PROBE 0x0
+#define SBI_EXT_CPPC_READ 0x1
+#define SBI_EXT_CPPC_READ_HI 0x2
+#define SBI_EXT_CPPC_WRITE 0x3
 
 // CPPC Registers
 /// @see
@@ -845,6 +925,13 @@ struct sbiret sbi_cppc_write(uint32_t cppc_reg_id, uint64_t val);
 /// @see
 /// https://github.com/riscv-non-isa/riscv-sbi-doc/blob/master/src/ext-nested-acceleration.adoc
 
+// SBI FIDs for NACL extension
+#define SBI_EXT_NACL_PROBE_FEATURE 0x0
+#define SBI_EXT_NACL_SET_SHMEM 0x1
+#define SBI_EXT_NACL_SYNC_CSR 0x2
+#define SBI_EXT_NACL_SYNC_HFENCE 0x3
+#define SBI_EXT_NACL_SYNC_SRET 0x4
+
 // Nested acceleration features
 /// @see
 /// https://github.com/riscv-non-isa/riscv-sbi-doc/blob/master/src/ext-nested-acceleration.adoc#table_nacl_features
@@ -910,6 +997,9 @@ struct sbiret sbi_nacl_sync_sret(void);
 // Steal-time Accounting Extension (EID #0x535441 "STA")
 /// @see
 /// https://github.com/riscv-non-isa/riscv-sbi-doc/blob/master/src/ext-steal-time.adoc
+
+// SBI FID for STA extension
+#define SBI_EXT_STA_STEAL_TIME_SET_SHMEM 0x0
 
 /**
  * @brief Set Steal-time Shared Memory Address (FID #0)
