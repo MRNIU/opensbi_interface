@@ -19,7 +19,9 @@
 
 #include <stdint.h>
 
-// SBI return error codes
+// Standard SBI Errors
+/// @see
+/// https://github.com/riscv-non-isa/riscv-sbi-doc/blob/master/src/binary-encoding.adoc#table_standard_sbi_errors
 #define SBI_SUCCESS 0
 #define SBI_ERR_FAILED -1
 #define SBI_ERR_NOT_SUPPORTED -2
@@ -40,19 +42,31 @@ struct sbiret {
 
 // ----------------------------------------------------------------------------
 // Base Extension (EID #0x10)
-// The base extension is designed to be as small as possible. As such, it only
-// contains functionality for probing which SBI extensions are available and for
-// querying the version of the SBI. All functions in the base extension must be
-// supported by all SBI implementations, so there are no error returns defined.
+/// @see
+/// https://github.com/riscv-non-isa/riscv-sbi-doc/blob/master/src/ext-base.adoc
 
 /**
  * @brief Get SBI specification version (FID #0)
- * @return struct sbiret.error  Always 0
- * @return struct sbiret.value  The minor number of the SBI specification is
+ * @return struct sbiret.error SBI_SUCCESS
+ * @return struct sbiret.value The minor number of the SBI specification is
  * encoded in the low 24 bits, with the major number encoded in the next 7 bits.
- * Bit 31 must be 0 and is reserved for future expansion.
  */
 struct sbiret sbi_get_spec_version(void);
+
+// SBI Implementation IDs
+/// @see
+/// https://github.com/riscv-non-isa/riscv-sbi-doc/blob/master/src/ext-base.adoc#sbi-implementation-ids
+enum {
+  SBI_IMPL_ID_BBL = 0,
+  SBI_IMPL_ID_OPENSBI = 1,
+  SBI_IMPL_ID_XVISOR = 2,
+  SBI_IMPL_ID_KVM = 3,
+  SBI_IMPL_ID_RUSTSBI = 4,
+  SBI_IMPL_ID_DIOSIX = 5,
+  SBI_IMPL_ID_COFFER = 6,
+  SBI_IMPL_ID_XEN = 7,
+  SBI_IMPL_ID_POLARFIRE_HSS = 8,
+};
 
 const char *SBI_IMPL_ID_NAMES[] = {
     "Berkeley Boot Loader (BBL)",
@@ -68,23 +82,22 @@ const char *SBI_IMPL_ID_NAMES[] = {
 
 /**
  * @brief Get SBI implementation ID (FID #1)
- * @return sbiret.error  Always 0
- * @return sbiret.value  Returns the current SBI implementation ID, which is
- * different for every SBI implementation.
+ * @return sbiret.error SBI_SUCCESS
+ * @return sbiret.value Returns the current SBI implementation ID.
  */
 struct sbiret sbi_get_impl_id(void);
 
 /**
  * @brief Get SBI implementation version (FID #2)
- * @return sbiret.error  Always 0
- * @return sbiret.value  Returns the current SBI implementation version.
+ * @return sbiret.error SBI_SUCCESS
+ * @return sbiret.value Returns the current SBI implementation version.
  */
 struct sbiret sbi_get_impl_version(void);
 
 /**
  * @brief Probe SBI extension (FID #3)
- * @return sbiret.error  Always 0
- * @return sbiret.value  Returns 0 if the given SBI extension ID (EID) is not
+ * @return sbiret.error SBI_SUCCESS
+ * @return sbiret.value Returns 0 if the given SBI extension ID (EID) is not
  * available, or 1 if it is available unless defined as any other non-zero value
  * by the implementation.
  */
@@ -92,24 +105,24 @@ struct sbiret sbi_probe_extension(long extension_id);
 
 /**
  * @brief Get machine vendor ID (FID #4)
- * @return sbiret.error  Always 0
- * @return sbiret.value  Return a value that is legal for the `mvendorid` CSR
+ * @return sbiret.error SBI_SUCCESS
+ * @return sbiret.value Return a value that is legal for the `mvendorid` CSR
  * and 0 is always a legal value for this CSR.
  */
 struct sbiret sbi_get_mvendorid(void);
 
 /**
  * @brief Get machine architecture ID (FID #5)
- * @return sbiret.error  Always 0
- * @return sbiret.value  Return a value that is legal for the `marchid` CSR and
+ * @return sbiret.error SBI_SUCCESS
+ * @return sbiret.value Return a value that is legal for the `marchid` CSR and
  * 0 is always a legal value for this CSR.
  */
 struct sbiret sbi_get_marchid(void);
 
 /**
  * @brief Get machine implementation ID (FID #6)
- * @return sbiret.error  Always 0
- * @return sbiret.value  Return a value that is legal for the `mimpid` CSR and 0
+ * @return sbiret.error SBI_SUCCESS
+ * @return sbiret.value Return a value that is legal for the `mimpid` CSR and 0
  * is always a legal value for this CSR.
  */
 struct sbiret sbi_get_mimpid(void);
@@ -117,6 +130,8 @@ struct sbiret sbi_get_mimpid(void);
 #if 0
 // ----------------------------------------------------------------------------
 // Legacy Extensions (EIDs #0x00 - #0x0F)
+/// @see
+/// https://github.com/riscv-non-isa/riscv-sbi-doc/blob/master/src/ext-legacy.adoc
 
 /**
  * @brief Set Timer (EID #0x00)
@@ -124,10 +139,6 @@ struct sbiret sbi_get_mimpid(void);
  * also clears the pending timer interrupt bit.
  * @return This SBI call returns 0 upon success or an implementation specific
  * negative error code.
- * @note If the supervisor wishes to clear the timer interrupt without
- * scheduling the next timer event, it can either request a timer interrupt
- * infinitely far into the future (i.e., (uint64_t)-1), or it can instead mask
- * the timer interrupt by clearing `sie.STIE` CSR bit.
  */
 long sbi_set_timer(uint64_t stime_value);
 
@@ -136,10 +147,6 @@ long sbi_set_timer(uint64_t stime_value);
  * Write data present in `ch` to debug console.
  * @return This SBI call returns 0 upon success or an implementation specific
  * negative error code.
- * @note Unlike `sbi_console_getchar()`, this SBI call *will block* if there
- * remain any pending characters to be transmitted or if the receiving terminal
- * is not yet ready to receive the byte. However, if the console doesn’t exist
- * at all, then the character is thrown away.
  */
 long sbi_console_putchar(int ch);
 
@@ -167,10 +174,6 @@ long sbi_clear_ipi(void);
  * Software Interrupts.
  * @return This SBI call returns 0 upon success or an implementation specific
  * negative error code.
- * @note hart_mask is a virtual address that points to a bit-vector of harts.
- * The bit vector is represented as a sequence of unsigned longs whose length
- * equals the number of harts in the system divided by the number of bits in an
- * unsigned long, rounded up to the next integer.
  */
 long sbi_send_ipi(const unsigned long *hart_mask);
 
@@ -189,8 +192,6 @@ long sbi_remote_fence_i(const unsigned long *hart_mask);
  * covering the range of virtual addresses between `start` and `start + size`.
  * @return This SBI call returns 0 upon success or an implementation specific
  * negative error code.
- * @note The remote fence operation applies to the entire address space if
- * either: start and size are both 0, or size is equal to 2^XLEN-1.
  */
 long sbi_remote_sfence_vma(const unsigned long *hart_mask, unsigned long start,
                            unsigned long size);
@@ -202,8 +203,6 @@ long sbi_remote_sfence_vma(const unsigned long *hart_mask, unsigned long start,
  * This covers only the given `ASID`.
  * @return This SBI call returns 0 upon success or an implementation specific
  * negative error code.
- * @note The remote fence operation applies to the entire address space if
- * either: start and size are both 0, or size is equal to 2^XLEN-1.
  */
 long sbi_remote_sfence_vma_asid(const unsigned long *hart_mask,
                                 unsigned long start, unsigned long size,
@@ -220,55 +219,144 @@ void sbi_shutdown(void);
 
 // ----------------------------------------------------------------------------
 // Timer Extension (EID #0x54494D45 "TIME")
-// Set Timer (FID #0)
+/// @see
+/// https://github.com/riscv-non-isa/riscv-sbi-doc/blob/master/src/ext-time.adoc
+
+/**
+ * @brief Set Timer (FID #0)
+ * @param stime_value absolute time
+ * @return sbiret.error NOT FOUND IN SPEC
+ * @return sbiret.value NOT FOUND IN SPEC
+ */
 struct sbiret sbi_set_timer(uint64_t stime_value);
 
 // ----------------------------------------------------------------------------
 // IPI Extension (EID #0x735049 "sPI: s-mode IPI")
-// Send IPI (FID #0)
+/// @see
+/// https://github.com/riscv-non-isa/riscv-sbi-doc/blob/master/src/ext-ipi.adoc
+
+/**
+ * @brief Send IPI (FID #0)
+ * @param hart_mask a scalar bit-vector containing hartids
+ * @param hart_mask_base the starting hartid from which the bit-vector must be
+ * computed
+ * @return sbiret.error SBI_SUCCESS
+ * @return sbiret.value NOT FOUND IN SPEC
+ */
 struct sbiret sbi_send_ipi(unsigned long hart_mask,
                            unsigned long hart_mask_base);
 
 // ----------------------------------------------------------------------------
 // RFENCE Extension (EID #0x52464E43 "RFNC")
+/// @see
+/// https://github.com/riscv-non-isa/riscv-sbi-doc/blob/master/src/ext-rfence.adoc
 
-// Remote FENCE.I (FID #0)
+/**
+ * @brief Remote FENCE.I (FID #0)
+ * @param hart_mask a scalar bit-vector containing hartids
+ * @param hart_mask_base the starting hartid from which the bit-vector must be
+ * computed
+ * @return sbiret.error SBI_SUCCESS
+ * @return sbiret.value NOT FOUND IN SPEC
+ */
 struct sbiret sbi_remote_fence_i(unsigned long hart_mask,
                                  unsigned long hart_mask_base);
 
-// Remote SFENCE.VMA (FID #1)
+/**
+ * @brief Remote SFENCE.VMA (FID #1)
+ * @param hart_mask a scalar bit-vector containing hartids
+ * @param hart_mask_base the starting hartid from which the bit-vector must be
+ * computed
+ * @param start_addr the start address of the range
+ * @param size the size of the range
+ * @return sbiret.error SBI_SUCCESS, SBI_ERR_INVALID_ADDRESS
+ * @return sbiret.value NOT FOUND IN SPEC
+ */
 struct sbiret sbi_remote_sfence_vma(unsigned long hart_mask,
                                     unsigned long hart_mask_base,
                                     unsigned long start_addr,
                                     unsigned long size);
 
-// Remote SFENCE.VMA with ASID (FID #2)
+/**
+ * @brief Remote SFENCE.VMA with ASID (FID #2)
+ * @param hart_mask a scalar bit-vector containing hartids
+ * @param hart_mask_base the starting hartid from which the bit-vector must be
+ * computed
+ * @param start_addr the start address of the range
+ * @param size the size of the range
+ * @param asid the address space identifier
+ * @return sbiret.error SBI_SUCCESS, SBI_ERR_INVALID_ADDRESS
+ * @return sbiret.value NOT FOUND IN SPEC
+ */
 struct sbiret sbi_remote_sfence_vma_asid(unsigned long hart_mask,
                                          unsigned long hart_mask_base,
                                          unsigned long start_addr,
                                          unsigned long size,
                                          unsigned long asid);
 
-// Remote HFENCE.GVMA with VMID (FID #3)
+/**
+ * @brief Remote HFENCE.GVMA with VMID (FID #3)
+ * @param hart_mask a scalar bit-vector containing hartids
+ * @param hart_mask_base the starting hartid from which the bit-vector must be
+ * computed
+ * @param start_addr the start address of the range
+ * @param size the size of the range
+ * @param vmid the virtual machine identifier
+ * @return sbiret.error SBI_SUCCESS, SBI_ERR_NOT_SUPPORTED,
+ * SBI_ERR_INVALID_ADDRESS
+ * @return sbiret.value NOT FOUND IN SPEC
+ */
 struct sbiret sbi_remote_hfence_gvma_vmid(unsigned long hart_mask,
                                           unsigned long hart_mask_base,
                                           unsigned long start_addr,
                                           unsigned long size,
                                           unsigned long vmid);
-// Remote HFENCE.GVMA (FID #4)
+
+/**
+ * @brief Remote HFENCE.GVMA (FID #4)
+ * @param hart_mask a scalar bit-vector containing hartids
+ * @param hart_mask_base the starting hartid from which the bit-vector must be
+ * computed
+ * @param start_addr the start address of the range
+ * @param size the size of the range
+ * @return sbiret.error SBI_SUCCESS, SBI_ERR_NOT_SUPPORTED,
+ * SBI_ERR_INVALID_ADDRESS
+ * @return sbiret.value NOT FOUND IN SPEC
+ */
 struct sbiret sbi_remote_hfence_gvma(unsigned long hart_mask,
                                      unsigned long hart_mask_base,
                                      unsigned long start_addr,
                                      unsigned long size);
 
-// Remote HFENCE.VVMA with ASID (FID #5)
+/**
+ * @brief Remote HFENCE.VVMA with ASID (FID #5)
+ * @param hart_mask a scalar bit-vector containing hartids
+ * @param hart_mask_base the starting hartid from which the bit-vector must be
+ * computed
+ * @param start_addr the start address of the range
+ * @param size the size of the range
+ * @param asid the address space identifier
+ * @return sbiret.error SBI_SUCCESS, SBI_ERR_NOT_SUPPORTED,
+ * SBI_ERR_INVALID_ADDRESS
+ * @return sbiret.value NOT FOUND IN SPEC
+ */
 struct sbiret sbi_remote_hfence_vvma_asid(unsigned long hart_mask,
                                           unsigned long hart_mask_base,
                                           unsigned long start_addr,
                                           unsigned long size,
                                           unsigned long asid);
 
-// Remote HFENCE.VVMA (FID #6)
+/**
+ * @brief Remote HFENCE.VVMA (FID #6)
+ * @param hart_mask a scalar bit-vector containing hartids
+ * @param hart_mask_base the starting hartid from which the bit-vector must be
+ * computed
+ * @param start_addr the start address of the range
+ * @param size the size of the range
+ * @return sbiret.error SBI_SUCCESS, SBI_ERR_NOT_SUPPORTED,
+ * SBI_ERR_INVALID_ADDRESS
+ * @return sbiret.value NOT FOUND IN SPEC
+ */
 struct sbiret sbi_remote_hfence_vvma(unsigned long hart_mask,
                                      unsigned long hart_mask_base,
                                      unsigned long start_addr,
@@ -276,131 +364,453 @@ struct sbiret sbi_remote_hfence_vvma(unsigned long hart_mask,
 
 // ----------------------------------------------------------------------------
 // Hart State Management Extension (EID #0x48534D "HSM")
+/// @see
+/// https://github.com/riscv-non-isa/riscv-sbi-doc/blob/master/src/ext-hsm.adoc
 
-// Hart start (FID #0)
+/**
+ * @brief Hart start (FID #0)
+ * @param hartid specifies the target hart which is to be started
+ * @param start_addr points to a runtime-specified physical address, where the
+ * hart can start executing in supervisor-mode
+ * @param opaque an XLEN-bit value which will be set in the `a1` register when
+ * the hart starts executing at `start_addr`
+ * @return sbiret.error SBI_SUCCESS, SBI_ERR_INVALID_ADDRESS,
+ * SBI_ERR_INVALID_PARAM, SBI_ERR_ALREADY_AVAILABLE, SBI_ERR_FAILED
+ * @return sbiret.value NOT FOUND IN SPEC
+ */
 struct sbiret sbi_hart_start(unsigned long hartid, unsigned long start_addr,
                              unsigned long opaque);
 
-// Hart stop (FID #1)
+/**
+ * @brief Hart stop (FID #1)
+ * @return sbiret.error SBI_SUCCESS, SBI_ERR_FAILED
+ * @return sbiret.value NOT FOUND IN SPEC
+ */
 struct sbiret sbi_hart_stop(void);
 
-// Hart get status (FID #2)
+// HSM Hart States
+/// @see
+/// https://github.com/riscv-non-isa/riscv-sbi-doc/blob/master/src/ext-hsm.adoc#table_hsm_states
+
+enum {
+  HSM_HART_STATE_STARTED = 0,
+  HSM_HART_STATE_STOPPED = 1,
+  HSM_HART_STATE_START_PENDING = 2,
+  HSM_HART_STATE_STOP_PENDING = 3,
+  HSM_HART_STATE_SUSPENDED = 4,
+  HSM_HART_STATE_SUSPEND_PENDING = 5,
+  HSM_HART_STATE_RESUME_PENDING = 6,
+};
+
+const char *HSM_HART_STATES_NAME[] = {
+    "STARTED",   "STOPPED",         "START_PENDING",  "STOP_PENDING",
+    "SUSPENDED", "SUSPEND_PENDING", "RESUME_PENDING",
+};
+
+/**
+ * @brief Hart get status (FID #2)
+ * @param hartid specifies the target hart for which status is required
+ * @return sbiret.error SBI_SUCCESS, SBI_ERR_INVALID_PARAM
+ * @return sbiret.value HSM Hart States
+ */
 struct sbiret sbi_hart_get_status(unsigned long hartid);
 
-// Hart suspend (FID #3)
+// HSM Hart Suspend Types
+/// @see
+/// https://github.com/riscv-non-isa/riscv-sbi-doc/blob/master/src/ext-hsm.adoc#table_hsm_hart_suspend_types
+#define HSM_SUSP_BASE_MASK 0x7fffffff
+#define HSM_SUSP_NON_RET_BIT 0x80000000
+#define HSM_SUSP_PLAT_BASE 0x10000000
+#define HSM_SUSPEND_RET_DEFAULT 0x00000000
+#define HSM_SUSPEND_RET_PLATFORM HSM_SUSP_PLAT_BASE
+#define HSM_SUSPEND_RET_LAST HSM_SUSP_BASE_MASK
+#define HSM_SUSPEND_NON_RET_DEFAULT HSM_SUSP_NON_RET_BIT
+#define HSM_SUSPEND_NON_RET_PLATFORM (HSM_SUSP_NON_RET_BIT | HSM_SUSP_PLAT_BASE)
+#define HSM_SUSPEND_NON_RET_LAST (HSM_SUSP_NON_RET_BIT | HSM_SUSP_BASE_MASK)
+
+/**
+ * @brief Hart suspend (FID #3)
+ * @param suspend_type HSM Hart Suspend Types
+ * @param resume_addr points to a runtime-specified physical address, where the
+ * hart can resume execution in supervisor-mode after a non-retentive suspend
+ * @param opaque an XLEN-bit value which will be set in the `a1` register when
+ * the hart resumes execution at `resume_addr` after a non-retentive suspend
+ * @return sbiret.error SBI_SUCCESS, SBI_ERR_INVALID_PARAM,
+ * SBI_ERR_NOT_SUPPORTED, SBI_ERR_INVALID_ADDRESS, SBI_ERR_FAILED
+ * @return sbiret.value NOT FOUND IN SPEC
+ */
 struct sbiret sbi_hart_suspend(uint32_t suspend_type, unsigned long resume_addr,
                                unsigned long opaque);
 
 // ----------------------------------------------------------------------------
 // System Reset Extension (EID #0x53525354 "SRST")
+/// @see
+/// https://github.com/riscv-non-isa/riscv-sbi-doc/blob/master/src/ext-sys-reset.adoc
 
-// System reset (FID #0)
+// SRST System Reset Types
+/// @see
+/// https://github.com/riscv-non-isa/riscv-sbi-doc/blob/master/src/ext-sys-reset.adoc#table_srst_system_reset_types
+enum {
+  SRST_RESET_TYPE_SHUTDOWN = 0x00000000,
+  SRST_RESET_TYPE_COLD_REBOOT = 0x00000001,
+  SRST_RESET_TYPE_WARM_REBOOT = 0x00000002,
+  // 0x00000003 - 0xEFFFFFFF Reserved for future use
+  // 0xF0000000 - 0xFFFFFFFF Vendor or platform specific reset type
+};
+
+// SRST System Reset Reasons
+/// @see
+/// https://github.com/riscv-non-isa/riscv-sbi-doc/blob/master/src/ext-sys-reset.adoc#table_srst_system_reset_reasons
+enum {
+  SRST_RESET_REASON_NONE = 0x00000000,
+  SRST_RESET_REASON_SYSTEM_FAILURE = 0x00000001,
+  // 0x00000002 - 0xDFFFFFFF Reserved for future use
+  // 0xE0000000 - 0xEFFFFFFF SBI implementation specific reset reason
+  // 0xF0000000 - 0xFFFFFFFF Vendor or platform specific reset reason
+};
+
+/**
+ * @brief System reset (FID #0)
+ * @param reset_type SRST System Reset Types
+ * @param reset_reason an optional parameter representing the reason for system
+ * reset, SRST System Reset Reasons
+ * @return sbiret.error SBI_SUCCESS, SBI_ERR_INVALID_PARAM,
+ * SBI_ERR_NOT_SUPPORTED, SBI_ERR_FAILED
+ * @return sbiret.value HSM Hart States
+ */
 struct sbiret sbi_system_reset(uint32_t reset_type, uint32_t reset_reason);
 
 // ----------------------------------------------------------------------------
 // Performance Monitoring Unit Extension (EID #0x504D55 "PMU")
+/// @see
+/// https://github.com/riscv-non-isa/riscv-sbi-doc/blob/master/src/ext-pmu.adoc
 
-// Get number of counters (FID #0)
+/**
+ * @brief Get number of counters (FID #0)
+ * @return sbiret.error SBI_SUCCESS
+ * @return sbiret.value the number of counters (both hardware and firmware)
+ */
 struct sbiret sbi_pmu_num_counters();
 
-// Get details of a counter (FID #1)
+// counter_info
+// counter_info[11:0] = CSR (12bit CSR number)
+// counter_info[17:12] = Width (One less than number of bits in CSR)
+// counter_info[XLEN-2:18] = Reserved for future use
+// counter_info[XLEN-1] = Type (0 = hardware and 1 = firmware)
+
+/**
+ * @brief Get details of a counter (FID #1)
+ * @param counter_idx the counter index
+ * @return sbiret.error SBI_SUCCESS, SBI_ERR_INVALID_PARAM
+ * @return sbiret.value the `counter_info` described
+ */
 struct sbiret sbi_pmu_counter_get_info(unsigned long counter_idx);
 
-// Find and configure a matching counter (FID #2)
+// PMU Counter Config Match Flags
+/// @see
+/// https://github.com/riscv-non-isa/riscv-sbi-doc/blob/master/src/ext-pmu.adoc#table_pmu_counter_cfg_match_flags
+
+enum {
+  SBI_PMU_CFG_FLAG_SKIP_MATCH = (1 << 0),
+  SBI_PMU_CFG_FLAG_CLEAR_VALUE = (1 << 1),
+  SBI_PMU_CFG_FLAG_AUTO_START = (1 << 2),
+  SBI_PMU_CFG_FLAG_SET_VUINH = (1 << 3),
+  SBI_PMU_CFG_FLAG_SET_VSINH = (1 << 4),
+  SBI_PMU_CFG_FLAG_SET_UINH = (1 << 5),
+  SBI_PMU_CFG_FLAG_SET_SINH = (1 << 6),
+  SBI_PMU_CFG_FLAG_SET_MINH = (1 << 7),
+};
+
+/**
+ * @brief Find and configure a matching counter (FID #2)
+ * @param counter_idx_base the base counter index, the set of counters whereas
+ * @param counter_idx_mask the counter index mask, the set of counters whereas
+ * @param config_flags additional counter configuration and filter flags, PMU
+ * Counter Config Match Flags
+ * @param event_idx the event to be monitored
+ * @param event_data any additional event configuration
+ * @return sbiret.error SBI_SUCCESS, SBI_ERR_INVALID_PARAM,
+ * SBI_ERR_NOT_SUPPORTED
+ * @return sbiret.value the `counter_idx`
+ */
 struct sbiret sbi_pmu_counter_config_matching(unsigned long counter_idx_base,
                                               unsigned long counter_idx_mask,
                                               unsigned long config_flags,
                                               unsigned long event_idx,
                                               uint64_t event_data);
 
-// Start a set of counters (FID #3)
+// PMU Counter Start Flags
+/// @see
+/// https://github.com/riscv-non-isa/riscv-sbi-doc/blob/master/src/ext-pmu.adoc#table_pmu_counter_start_flags
+enum {
+  SBI_PMU_START_SET_INIT_VALUE = (1 << 0),
+  SBI_PMU_START_FLAG_INIT_SNAPSHOT = (1 << 1),
+};
+
+/**
+ * @brief Start a set of counters (FID #3)
+ * @param counter_idx_base the base counter index, the set of counters whereas
+ * @param counter_idx_mask the counter index mask, the set of counters whereas
+ * @param start_flags PMU Counter Start Flags
+ * @param initial_value specifies the initial value of the counter
+ * @return sbiret.error SBI_SUCCESS, SBI_ERR_INVALID_PARAM,
+ * SBI_ERR_ALREADY_STARTED, SBI_ERR_NO_SHMEM
+ * @return sbiret.value NOT FOUND IN SPEC
+ */
 struct sbiret sbi_pmu_counter_start(unsigned long counter_idx_base,
                                     unsigned long counter_idx_mask,
                                     unsigned long start_flags,
                                     uint64_t initial_value);
 
-// Stop a set of counters (FID #4)
+// PMU Counter Stop Flags
+/// @see
+/// https://github.com/riscv-non-isa/riscv-sbi-doc/blob/master/src/ext-pmu.adoc#table_pmu_counter_stop_flags
+enum {
+  SBI_PMU_STOP_FLAG_RESET = (1 << 0),
+  SBI_PMU_STOP_FLAG_TAKE_SNAPSHOT = (1 << 1),
+
+};
+
+/**
+ * @brief Stop a set of counters (FID #4)
+ * @param counter_idx_base the base counter index, the set of counters whereas
+ * @param counter_idx_mask the counter index mask, the set of counters whereas
+ * @param stop_flags PMU Counter Stop Flags
+ * @return sbiret.error SBI_SUCCESS, SBI_ERR_INVALID_PARAM,
+ * SBI_ERR_ALREADY_STOPPED, SBI_ERR_NO_SHMEM
+ * @return sbiret.value NOT FOUND IN SPEC
+ */
 struct sbiret sbi_pmu_counter_stop(unsigned long counter_idx_base,
                                    unsigned long counter_idx_mask,
                                    unsigned long stop_flags);
 
-// Read a firmware counter (FID #5)
+/**
+ * @brief Read a firmware counter (FID #5)
+ * @param counter_idx the counter index
+ * @return sbiret.error SBI_SUCCESS, SBI_ERR_INVALID_PARAM
+ * @return sbiret.value the current firmware counter value
+ */
 struct sbiret sbi_pmu_counter_fw_read(unsigned long counter_idx);
 
-// Read a firmware counter high bits (FID #6)
+/**
+ * @brief Read a firmware counter high bits (FID #6)
+ * @param counter_idx the counter index
+ * @return sbiret.error SBI_SUCCESS, SBI_ERR_INVALID_PARAM
+ * @return sbiret.value the upper 32 bits of the current firmware counter value
+ */
 struct sbiret sbi_pmu_counter_fw_read_hi(unsigned long counter_idx);
 
-// Set PMU snapshot shared memory (FID #7)
+/**
+ * @brief Set PMU snapshot shared memory (FID #7)
+ * @param shmem_phys_lo the lower 32 bits of the physical address of the shared
+ * @param shmem_phys_hi the upper 32 bits of the physical address of the shared
+ * @param flags MUST BE 0
+ * @return sbiret.error SBI_SUCCESS, SBI_ERR_NOT_SUPPORTED,
+ * SBI_ERR_INVALID_PARAM, SBI_ERR_INVALID_ADDRESS
+ * @return sbiret.value NOT FOUND IN SPEC
+ */
 struct sbiret sbi_pmu_snapshot_set_shmem(unsigned long shmem_phys_lo,
                                          unsigned long shmem_phys_hi,
                                          unsigned long flags);
 
 // ----------------------------------------------------------------------------
 // Debug Console Extension (EID #0x4442434E "DBCN")
+/// @see
+/// https://github.com/riscv-non-isa/riscv-sbi-doc/blob/master/src/ext-debug-console.adoc
 
-// Console Write (FID #0)
+/**
+ * @brief Console Write (FID #0)
+ * @param num_bytes specifies the number of bytes in the input memory
+ * @param base_addr_lo specifies the lower XLEN bits of the input memory
+ * physical base address
+ * @param base_addr_hi specifies the upper XLEN bits of the input memory
+ * physical base address
+ * @return sbiret.error SBI_SUCCESS, SBI_ERR_INVALID_PARAM, SBI_ERR_DENIED,
+ * SBI_ERR_FAILED
+ * @return sbiret.value number of bytes written
+ */
 struct sbiret sbi_debug_console_write(unsigned long num_bytes,
                                       unsigned long base_addr_lo,
                                       unsigned long base_addr_hi);
 
-// Console Read (FID #1)
+/**
+ * @brief Console Read (FID #1)
+ * @param num_bytes specifies the maximum number of bytes which can be written
+ * into the output memory
+ * @param base_addr_lo specifies the lower XLEN bits of the output memory
+ * physical base address
+ * @param base_addr_hi specifies the upper XLEN bits of the output memory
+ * physical base address
+ * @return sbiret.error SBI_SUCCESS, SBI_ERR_INVALID_PARAM, SBI_ERR_DENIED,
+ * SBI_ERR_FAILED
+ * @return sbiret.value number of bytes read
+ */
 struct sbiret sbi_debug_console_read(unsigned long num_bytes,
                                      unsigned long base_addr_lo,
                                      unsigned long base_addr_hi);
 
-// Console Write Byte (FID #2)
+/**
+ * @brief Console Write Byte (FID #2)
+ * @param byte the byte to be written
+ * @return sbiret.error SBI_SUCCESS, SBI_ERR_DENIED, SBI_ERR_FAILED
+ * @return sbiret.value set to 0
+ */
 struct sbiret sbi_debug_console_write_byte(uint8_t byte);
 
 // ----------------------------------------------------------------------------
 // System Suspend Extension (EID #0x53555350 "SUSP")
+/// @see
+/// https://github.com/riscv-non-isa/riscv-sbi-doc/blob/master/src/ext-sys-suspend.adoc
 
-// System Suspend (FID #0)
+// SUSP System Sleep Types
+/// @see
+/// https://github.com/riscv-non-isa/riscv-sbi-doc/blob/master/src/ext-sys-suspend.adoc#table_susp_sleep_types
+enum {
+  SUSPEND_TO_RAM = 0,
+};
+
+/**
+ * @brief System Suspend (FID #0)
+ * @param sleep_type SUSP System Sleep Types
+ * @param resume_addr points to a runtime-specified physical address, where the
+ * hart can resume execution in supervisor-mode after a system suspend
+ * @param opaque an XLEN-bit value which will be set in the `a1` register when
+ * the hart resumes execution at `resume_addr` after a system suspend
+ * @return sbiret.error SBI_SUCCESS, SBI_ERR_INVALID_PARAM,
+ * SBI_ERR_NOT_SUPPORTED, SBI_ERR_INVALID_ADDRESS, SBI_ERR_DENIED,
+ * SBI_ERR_FAILED
+ * @return sbiret.value NOT FOUND IN SPEC
+ */
 struct sbiret sbi_system_suspend(uint32_t sleep_type, unsigned long resume_addr,
                                  unsigned long opaque);
 
 // ----------------------------------------------------------------------------
 // CPPC Extension (EID #0x43505043 "CPPC")
+/// @see
+/// https://github.com/riscv-non-isa/riscv-sbi-doc/blob/master/src/ext-cppc.adoc
 
-// Probe CPPC register (FID #0)
+/**
+ * @brief Probe CPPC register (FID #0)
+ * @param cppc_reg_id the CPPC register ID
+ * @return sbiret.error SBI_SUCCESS, SBI_ERR_INVALID_PARAM, SBI_ERR_FAILED
+ * @return sbiret.value the register width, 0 if not implemented
+ */
 struct sbiret sbi_cppc_probe(uint32_t cppc_reg_id);
 
-// Read CPPC register (FID #1)
+/**
+ * @brief Read CPPC register (FID #1)
+ * @param cppc_reg_id the CPPC register ID
+ * @return sbiret.error SBI_SUCCESS, SBI_ERR_INVALID_PARAM,
+ * SBI_ERR_NOT_SUPPORTED, SBI_ERR_DENIED, SBI_ERR_FAILED
+ * @return sbiret.value the lower 32-bit value of the register
+ */
 struct sbiret sbi_cppc_read(uint32_t cppc_reg_id);
 
-// Read CPPC register high bits (FID #2)
+/**
+ * @brief Read CPPC register high bits (FID #2)
+ * @param cppc_reg_id the CPPC register ID
+ * @return sbiret.error SBI_SUCCESS, SBI_ERR_INVALID_PARAM,
+ * SBI_ERR_NOT_SUPPORTED, SBI_ERR_DENIED, SBI_ERR_FAILED
+ * @return sbiret.value the upper 32-bit value of the register
+ */
 struct sbiret sbi_cppc_read_hi(uint32_t cppc_reg_id);
 
-// Write to CPPC register (FID #3)
+/**
+ * @brief Write to CPPC register (FID #3)
+ * @param cppc_reg_id the CPPC register ID
+ * @param val the value to be written
+ * @return sbiret.error SBI_SUCCESS, SBI_ERR_INVALID_PARAM,
+ * SBI_ERR_NOT_SUPPORTED, SBI_ERR_DENIED, SBI_ERR_FAILED
+ * @return sbiret.value the upper 32-bit value of the register
+ */
 struct sbiret sbi_cppc_write(uint32_t cppc_reg_id, uint64_t val);
 
 // ----------------------------------------------------------------------------
 // Nested Acceleration Extension (EID #0x4E41434C "NACL")
+/// @see
+/// https://github.com/riscv-non-isa/riscv-sbi-doc/blob/master/src/ext-nested-acceleration.adoc
 
-// Probe nested acceleration feature (FID #0)
+// Nested acceleration features
+/// @see
+/// https://github.com/riscv-non-isa/riscv-sbi-doc/blob/master/src/ext-nested-acceleration.adoc#table_nacl_features
+enum {
+  SBI_NACL_FEAT_SYNC_CSR = 0x00000000,
+  SBI_NACL_FEAT_SYNC_HFENCE = 0x00000001,
+  SBI_NACL_FEAT_SYNC_SRET = 0x00000002,
+  SBI_NACL_FEAT_AUTOSWAP_CSR = 0x00000003,
+};
+
+/**
+ * @brief Probe nested acceleration feature (FID #0)
+ * @param feature_id specifies the nested acceleration feature to probe
+ * @return sbiret.error SBI_SUCCESS
+ * @return sbiret.value It returns 0 if the given feature_id is not available,
+ * or 1 if it is available.
+ */
 struct sbiret sbi_nacl_probe_feature(uint32_t feature_id);
 
-// Set nested acceleration shared memory (FID #1)
+/**
+ * @brief Set nested acceleration shared memory (FID #1)
+ * @param shmem_phys_lo specifies the lower XLEN bits of the shared memory
+ * physical base address
+ * @param shmem_phys_hi specifies the upper XLEN bits of the shared memory
+ * physical base address
+ * @param flags MUST BE 0
+ * @return sbiret.error SBI_SUCCESS, SBI_ERR_INVALID_PARAM,
+ * SBI_ERR_INVALID_ADDRESS
+ * @return sbiret.value NOT FOUND IN SPEC
+ */
 struct sbiret sbi_nacl_set_shmem(unsigned long shmem_phys_lo,
                                  unsigned long shmem_phys_hi,
                                  unsigned long flags);
 
-// Synchronize shared memory CSRs (FID #2)
+/**
+ * @brief Synchronize shared memory CSRs (FID #2)
+ * @param csr_num specifies the set of RISC-V H-extension CSRs to be
+ * synchronized
+ * @return sbiret.error SBI_SUCCESS, SBI_ERR_NOT_SUPPORTED,
+ * SBI_ERR_INVALID_PARAM, SBI_ERR_NO_SHMEM
+ * @return sbiret.value NOT FOUND IN SPEC
+ */
 struct sbiret sbi_nacl_sync_csr(unsigned long csr_num);
 
-// Synchronize shared memory HFENCEs (FID #3)
+/**
+ * @brief Synchronize shared memory HFENCEs (FID #3)
+ * @param entry_index specifies the set of nested HFENCE entries to be
+ * synchronized
+ * @return sbiret.error SBI_SUCCESS, SBI_ERR_NOT_SUPPORTED,
+ * SBI_ERR_INVALID_PARAM, SBI_ERR_NO_SHMEM
+ * @return sbiret.value NOT FOUND IN SPEC
+ */
 struct sbiret sbi_nacl_sync_hfence(unsigned long entry_index);
 
-// Synchronize shared memory and emulate SRET (FID #4)
+/**
+ * @brief Synchronize shared memory and emulate SRET (FID #4)
+ * @return sbiret.error SBI_SUCCESS, SBI_ERR_NOT_SUPPORTED, SBI_ERR_NO_SHMEM
+ * @return sbiret.value not return upon success
+ */
 struct sbiret sbi_nacl_sync_sret(void);
 
 // ----------------------------------------------------------------------------
 // Steal-time Accounting Extension (EID #0x535441 "STA")
+/// @see
+/// https://github.com/riscv-non-isa/riscv-sbi-doc/blob/master/src/ext-steal-time.adoc
 
-// Set Steal-time Shared Memory Address (FID #0)
+/**
+ * @brief Set Steal-time Shared Memory Address (FID #0)
+ * @param shmem_phys_lo specifies the lower XLEN bits of the shared memory
+ * physical base address
+ * @param shmem_phys_hi specifies the upper XLEN bits of the shared memory
+ * physical base address
+ * @param flags MUST BE 0
+ * @return sbiret.error SBI_SUCCESS, SBI_ERR_INVALID_PARAM,
+ * SBI_ERR_INVALID_ADDRESS, SBI_ERR_FAILED
+ * @return sbiret.value set to 0
+ */
 struct sbiret sbi_steal_time_set_shmem(unsigned long shmem_phys_lo,
                                        unsigned long shmem_phys_hi,
                                        unsigned long flags);
 
 // ----------------------------------------------------------------------------
 
-#endif
+#endif  // OPENSBI_INTERFACE_SRC_INCLUDE_OPENSBI_INTERFACE_H

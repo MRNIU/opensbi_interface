@@ -60,13 +60,7 @@
       "displayName": "build",
       "description": "build",
       "toolchainFile": "${sourceDir}/cmake/x86_64-riscv64-gcc.cmake",
-      "binaryDir": "${sourceDir}/build",
-      "cacheVariables": {
-        "TARGET_ARCH": {
-          "type": "STRING",
-          "value": "riscv64"
-        }
-      }
+      "binaryDir": "${sourceDir}/build"
     }
   ]
 }

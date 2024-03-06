@@ -7,4 +7,5 @@
 [![996.icu](https://img.shields.io/badge/link-996.icu-red.svg)](https://996.icu)
 
 # opensbi_interface
-interface for opensbi baremetal
+
+interface for opensbi bare metal
