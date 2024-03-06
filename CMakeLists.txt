@@ -30,4 +30,4 @@ include(3rd)
 # 添加要编译的目录
 add_subdirectory(${PROJECT_SOURCE_DIR}/doc)
 add_subdirectory(${PROJECT_SOURCE_DIR}/src)
-# add_subdirectory(${PROJECT_SOURCE_DIR}/test)
+add_subdirectory(${PROJECT_SOURCE_DIR}/test)

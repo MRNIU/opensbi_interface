@@ -17,13 +17,4 @@ target_compile_options(opensbi_interface PRIVATE
         -Wall
         # 打开额外警告
         -Wextra
-        # 启用异常处理机制
-        -fexceptions
-        # 启用 free-standing 环境
-        -ffreestanding
-)
-
-target_link_options(opensbi_interface PRIVATE
-        # 不链接 ctr0 等启动代码
-        -nostartfiles
 )

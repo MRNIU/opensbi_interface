@@ -15,3 +15,18 @@
  */
 
 #include "opensbi_interface.h"
+
+int main(int, char **) {
+  sbi_debug_console_write_byte('H');
+  sbi_debug_console_write_byte('e');
+  sbi_debug_console_write_byte('l');
+  sbi_debug_console_write_byte('l');
+  sbi_debug_console_write_byte('o');
+  sbi_debug_console_write_byte('W');
+  sbi_debug_console_write_byte('o');
+  sbi_debug_console_write_byte('r');
+  sbi_debug_console_write_byte('l');
+  sbi_debug_console_write_byte('d');
+  sbi_debug_console_write_byte('!');
+  return 0;
+}
