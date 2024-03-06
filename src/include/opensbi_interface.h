@@ -22,16 +22,18 @@
 // Standard SBI Errors
 /// @see
 /// https://github.com/riscv-non-isa/riscv-sbi-doc/blob/master/src/binary-encoding.adoc#table_standard_sbi_errors
-#define SBI_SUCCESS 0
-#define SBI_ERR_FAILED -1
-#define SBI_ERR_NOT_SUPPORTED -2
-#define SBI_ERR_INVALID_PARAM -3
-#define SBI_ERR_DENIED -4
-#define SBI_ERR_INVALID_ADDRESS -5
-#define SBI_ERR_ALREADY_AVAILABLE -6
-#define SBI_ERR_ALREADY_STARTED -7
-#define SBI_ERR_ALREADY_STOPPED -8
-#define SBI_ERR_NO_SHMEM -9
+enum {
+  SBI_SUCCESS = 0,
+  SBI_ERR_FAILED = -1,
+  SBI_ERR_NOT_SUPPORTED = -2,
+  SBI_ERR_INVALID_PARAM = -3,
+  SBI_ERR_DENIED = -4,
+  SBI_ERR_INVALID_ADDRESS = -5,
+  SBI_ERR_ALREADY_AVAILABLE = -6,
+  SBI_ERR_ALREADY_STARTED = -7,
+  SBI_ERR_ALREADY_STOPPED = -8,
+  SBI_ERR_NO_SHMEM = -9,
+};
 
 // SBI functions must return a pair of values in a0 and a1, with a0 returning an
 // error code.
@@ -485,6 +487,91 @@ struct sbiret sbi_system_reset(uint32_t reset_type, uint32_t reset_reason);
 /// @see
 /// https://github.com/riscv-non-isa/riscv-sbi-doc/blob/master/src/ext-pmu.adoc
 
+// PMU Hardware Events
+/// @see
+/// https://github.com/riscv-non-isa/riscv-sbi-doc/blob/master/src/ext-pmu.adoc#table_pmu_hardware_events
+enum {
+  SBI_PMU_HW_NO_EVENT = 0,
+  SBI_PMU_HW_CPU_CYCLES = 1,
+  SBI_PMU_HW_INSTRUCTIONS = 2,
+  SBI_PMU_HW_CACHE_REFERENCES = 3,
+  SBI_PMU_HW_CACHE_MISSES = 4,
+  SBI_PMU_HW_BRANCH_INSTRUCTIONS = 5,
+  SBI_PMU_HW_BRANCH_MISSES = 6,
+  SBI_PMU_HW_BUS_CYCLES = 7,
+  SBI_PMU_HW_STALLED_CYCLES_FRONTEND = 8,
+  SBI_PMU_HW_STALLED_CYCLES_BACKEND = 9,
+  SBI_PMU_HW_REF_CPU_CYCLES = 10,
+};
+
+// Generalized hardware cache events
+enum {
+  SBI_PMU_HW_CACHE_L1D = 0,
+  SBI_PMU_HW_CACHE_L1I = 1,
+  SBI_PMU_HW_CACHE_LL = 2,
+  SBI_PMU_HW_CACHE_DTLB = 3,
+  SBI_PMU_HW_CACHE_ITLB = 4,
+  SBI_PMU_HW_CACHE_BPU = 5,
+  SBI_PMU_HW_CACHE_NODE = 6,
+};
+
+// Generalized hardware cache events
+enum {
+  SBI_PMU_HW_CACHE_OP_READ = 0,
+  SBI_PMU_HW_CACHE_OP_WRITE = 1,
+  SBI_PMU_HW_CACHE_OP_PREFETCH = 2,
+};
+
+// Generalized hardware cache events
+enum {
+  SBI_PMU_HW_CACHE_RESULT_ACCESS = 0,
+  SBI_PMU_HW_CACHE_RESULT_MISS = 1,
+};
+
+// PMU Firmware Events
+/// @see
+/// https://github.com/riscv-non-isa/riscv-sbi-doc/blob/master/src/ext-pmu.adoc#table_pmu_firmware_events
+enum {
+  SBI_PMU_FW_MISALIGNED_LOAD = 0,
+  SBI_PMU_FW_MISALIGNED_STORE = 1,
+  SBI_PMU_FW_ACCESS_LOAD = 2,
+  SBI_PMU_FW_ACCESS_STORE = 3,
+  SBI_PMU_FW_ILLEGAL_INSN = 4,
+  SBI_PMU_FW_SET_TIMER = 5,
+  SBI_PMU_FW_IPI_SENT = 6,
+  SBI_PMU_FW_IPI_RECVD = 7,
+  SBI_PMU_FW_FENCE_I_SENT = 8,
+  SBI_PMU_FW_FENCE_I_RECVD = 9,
+  SBI_PMU_FW_SFENCE_VMA_SENT = 10,
+  SBI_PMU_FW_SFENCE_VMA_RCVD = 11,
+  SBI_PMU_FW_SFENCE_VMA_ASID_SENT = 12,
+  SBI_PMU_FW_SFENCE_VMA_ASID_RCVD = 13,
+  SBI_PMU_FW_HFENCE_GVMA_SENT = 14,
+  SBI_PMU_FW_HFENCE_GVMA_RCVD = 15,
+  SBI_PMU_FW_HFENCE_GVMA_VMID_SENT = 16,
+  SBI_PMU_FW_HFENCE_GVMA_VMID_RCVD = 17,
+  SBI_PMU_FW_HFENCE_VVMA_SENT = 18,
+  SBI_PMU_FW_HFENCE_VVMA_RCVD = 19,
+  SBI_PMU_FW_HFENCE_VVMA_ASID_SENT = 20,
+  SBI_PMU_FW_HFENCE_VVMA_ASID_RCVD = 21,
+  SBI_PMU_FW_PLATFORM = 0xFFFF,
+};
+
+// SBI PMU event idx type
+enum {
+  SBI_PMU_EVENT_TYPE_HW = 0x0,
+  SBI_PMU_EVENT_TYPE_HW_CACHE = 0x1,
+  SBI_PMU_EVENT_TYPE_HW_RAW = 0x2,
+  SBI_PMU_EVENT_TYPE_FW = 0xf,
+  SBI_PMU_EVENT_TYPE_MAX,
+};
+
+// SBI PMU counter type
+enum {
+  SBI_PMU_CTR_TYPE_HW = 0,
+  SBI_PMU_CTR_TYPE_FW,
+};
+
 /**
  * @brief Get number of counters (FID #0)
  * @return sbiret.error SBI_SUCCESS
@@ -688,6 +775,34 @@ struct sbiret sbi_system_suspend(uint32_t sleep_type, unsigned long resume_addr,
 // CPPC Extension (EID #0x43505043 "CPPC")
 /// @see
 /// https://github.com/riscv-non-isa/riscv-sbi-doc/blob/master/src/ext-cppc.adoc
+
+// CPPC Registers
+/// @see
+/// https://github.com/riscv-non-isa/riscv-sbi-doc/blob/master/src/ext-cppc.adoc#table_cppc_registers
+enum {
+  SBI_CPPC_HIGHEST_PERF = 0x00000000,
+  SBI_CPPC_NOMINAL_PERF = 0x00000001,
+  SBI_CPPC_LOW_NON_LINEAR_PERF = 0x00000002,
+  SBI_CPPC_LOWEST_PERF = 0x00000003,
+  SBI_CPPC_GUARANTEED_PERF = 0x00000004,
+  SBI_CPPC_DESIRED_PERF = 0x00000005,
+  SBI_CPPC_MIN_PERF = 0x00000006,
+  SBI_CPPC_MAX_PERF = 0x00000007,
+  SBI_CPPC_PERF_REDUC_TOLERANCE = 0x00000008,
+  SBI_CPPC_TIME_WINDOW = 0x00000009,
+  SBI_CPPC_CTR_WRAP_TIME = 0x0000000A,
+  SBI_CPPC_REFERENCE_CTR = 0x0000000B,
+  SBI_CPPC_DELIVERED_CTR = 0x0000000C,
+  SBI_CPPC_PERF_LIMITED = 0x0000000D,
+  SBI_CPPC_ENABLE = 0x0000000E,
+  SBI_CPPC_AUTO_SEL_ENABLE = 0x0000000F,
+  SBI_CPPC_AUTO_ACT_WINDOW = 0x00000010,
+  SBI_CPPC_ENERGY_PERF_PREFERENCE = 0x00000011,
+  SBI_CPPC_REFERENCE_PERF = 0x00000012,
+  SBI_CPPC_LOWEST_FREQ = 0x00000013,
+  SBI_CPPC_NOMINAL_FREQ = 0x00000014,
+  SBI_CPPC_TRANSITION_LATENCY = 0x80000000,
+};
 
 /**
  * @brief Probe CPPC register (FID #0)
