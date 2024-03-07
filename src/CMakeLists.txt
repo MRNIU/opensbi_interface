@@ -34,10 +34,10 @@ install(EXPORT ${PROJECT_NAME}-targets
         DESTINATION lib/cmake/${PROJECT_NAME}
 )
 
-add_custom_command(TARGET ${PROJECT_NAME}
-        COMMENT "install ${PROJECT_NAME} ..."
-        POST_BUILD
-        DEPENDS ${PROJECT_NAME}
-        WORKING_DIRECTORY ${PROJECT_BINARY_DIR}
-        COMMAND make install
-)
+#add_custom_command(TARGET ${PROJECT_NAME}
+#        COMMENT "install ${PROJECT_NAME} ..."
+#        POST_BUILD
+#        DEPENDS ${PROJECT_NAME}
+#        WORKING_DIRECTORY ${PROJECT_BINARY_DIR}
+#        COMMAND make install
+#)

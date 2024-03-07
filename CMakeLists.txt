@@ -10,7 +10,7 @@ cmake_minimum_required(VERSION 3.27 FATAL_ERROR)
 # 设置项目名与版本
 project(
         opensbi_interface
-        VERSION 1.0.4
+        VERSION 1.0.5
 )
 
 # 禁止原地编译
