@@ -21,11 +21,8 @@ if (${PROJECT_SOURCE_DIR} STREQUAL ${PROJECT_BINARY_DIR})
     )
 endif ()
 
-# 设置辅助 cmake 脚本路径
-list(APPEND CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake")
-
 # 导入第三方依赖
-include(3rd)
+include(${PROJECT_SOURCE_DIR}/cmake/3rd.cmake)
 
 # 添加要编译的目录
 add_subdirectory(${PROJECT_SOURCE_DIR}/doc)
