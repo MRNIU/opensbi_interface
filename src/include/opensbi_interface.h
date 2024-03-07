@@ -17,6 +17,10 @@
 #ifndef OPENSBI_INTERFACE_SRC_INCLUDE_OPENSBI_INTERFACE_H
 #define OPENSBI_INTERFACE_SRC_INCLUDE_OPENSBI_INTERFACE_H
 
+#if defined(__cplusplus)
+extern "C" {
+#endif
+
 #include <stdint.h>
 
 // Standard SBI Errors
@@ -1017,5 +1021,9 @@ struct sbiret sbi_steal_time_set_shmem(unsigned long shmem_phys_lo,
                                        unsigned long flags);
 
 // ----------------------------------------------------------------------------
+
+#if defined(__cplusplus)
+}
+#endif  // __cplusplus
 
 #endif  // OPENSBI_INTERFACE_SRC_INCLUDE_OPENSBI_INTERFACE_H
