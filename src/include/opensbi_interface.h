@@ -102,7 +102,7 @@ enum {
   SBI_IMPL_ID_POLARFIRE_HSS = 8,
 };
 
-static const char *SBI_IMPL_ID_NAMES[] = {
+[[maybe_unused]] static const char *SBI_IMPL_ID_NAMES[] = {
     "Berkeley Boot Loader (BBL)",
     "OpenSBI",
     "Xvisor",
@@ -457,7 +457,7 @@ enum {
   HSM_HART_STATE_RESUME_PENDING = 6,
 };
 
-static const char *HSM_HART_STATES_NAME[] = {
+[[maybe_unused]] static const char *HSM_HART_STATES_NAME[] = {
     "STARTED",   "STOPPED",         "START_PENDING",  "STOP_PENDING",
     "SUSPENDED", "SUSPEND_PENDING", "RESUME_PENDING",
 };
