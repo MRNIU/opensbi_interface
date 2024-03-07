@@ -83,26 +83,6 @@ if (opensbi_ADDED)
     )
 endif ()
 
-# https://github.com/cpm-cmake/CPMLicenses.cmake
-# 保持在 CPMAddPackage 的最后
-CPMAddPackage(
-        NAME CPMLicenses.cmake
-        GITHUB_REPOSITORY cpm-cmake/CPMLicenses.cmake
-        VERSION 0.0.7
-)
-if (CPMLicenses.cmake_ADDED)
-    cpm_licenses_create_disclaimer_target(
-            write-licenses "${CMAKE_CURRENT_SOURCE_DIR}/3rd/LICENSE" "${CPM_PACKAGES}"
-    )
-endif ()
-# make 时自动在 3rd 文件夹下生成 LICENSE 文件
-add_custom_target(3rd_licenses
-        ALL
-        COMMAND
-        make
-        write-licenses
-)
-
 # doxygen
 find_package(Doxygen
         REQUIRED dot)
