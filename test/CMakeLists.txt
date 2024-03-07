@@ -16,10 +16,6 @@ add_executable(${PROJECT_NAME}
         boot.S
 )
 
-target_include_directories(${PROJECT_NAME} PRIVATE
-        ../src/include
-)
-
 target_compile_options(${PROJECT_NAME} PRIVATE
         -Wall
         -Wextra

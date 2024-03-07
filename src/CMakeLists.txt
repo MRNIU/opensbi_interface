@@ -26,8 +26,18 @@ install(TARGETS ${PROJECT_NAME}
         PUBLIC_HEADER DESTINATION include
         ARCHIVE DESTINATION lib
         LIBRARY DESTINATION lib
-        RUNTIME DESTINATION bin)
+        RUNTIME DESTINATION bin
+)
 install(EXPORT ${PROJECT_NAME}-targets
         NAMESPACE ${PROJECT_NAME}::
         FILE ${PROJECT_NAME}-config.cmake
-        DESTINATION lib/cmake/${PROJECT_NAME})
+        DESTINATION lib/cmake/${PROJECT_NAME}
+)
+
+add_custom_command(TARGET ${PROJECT_NAME}
+        COMMENT "install ${PROJECT_NAME} ..."
+        POST_BUILD
+        DEPENDS ${PROJECT_NAME}
+        WORKING_DIRECTORY ${PROJECT_BINARY_DIR}
+        COMMAND make install
+)
