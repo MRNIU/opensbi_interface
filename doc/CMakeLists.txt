@@ -40,5 +40,5 @@ set(DOXYGEN_HTML_TIMESTAMP YES)
 doxygen_add_docs(doc
         COMMENT "Generating docs at ${PROJECT_SOURCE_DIR}/html/index.html ..."
         WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
-        ${CMAKE_SOURCE_DIR}
+        ${PROJECT_SOURCE_DIR}/..
 )
