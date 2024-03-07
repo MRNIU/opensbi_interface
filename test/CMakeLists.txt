@@ -6,7 +6,7 @@
 
 # 设置项目名与版本
 project(
-        test
+        opensbi_interface_test
 )
 
 enable_language(ASM C)
@@ -34,7 +34,6 @@ target_link_libraries(${PROJECT_NAME} PRIVATE
 )
 
 add_dependencies(${PROJECT_NAME}
-        opensbi
         opensbi_interface
 )
 
@@ -46,6 +45,6 @@ add_custom_target(${PROJECT_NAME}_run DEPENDS ${PROJECT_NAME}
         -monitor telnet::2333,server,nowait
         -machine virt
         -nographic
-        -bios ${opensbi_BINARY_DIR}/platform/generic/firmware/fw_jump.elf
+        -bios ${PROJECT_SOURCE_DIR}/fw_jump.elf
         -kernel $<TARGET_FILE:${PROJECT_NAME}>
 )
