@@ -83,7 +83,6 @@ if (opensbi_ADDED)
     )
 endif ()
 
-
 # https://github.com/cpm-cmake/CPMLicenses.cmake
 # 保持在 CPMAddPackage 的最后
 CPMAddPackage(

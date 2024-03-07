@@ -30,8 +30,8 @@
       "description": "base configurePresets",
       "generator": "Unix Makefiles",
       "toolchainFile": "",
-      "binaryDir": "",
-      "installDir": "",
+      "binaryDir": "${sourceDir}/build",
+      "installDir": "${sourceDir}/build/install",
       "cacheVariables": {
         "CMAKE_VERBOSE_MAKEFILE": {
           "type": "BOOL",
@@ -43,11 +43,7 @@
         },
         "CMAKE_BUILD_TYPE": {
           "type": "STRING",
-          "value": "Debug"
-        },
-        "COVERAGE_OUTPUT_DIR": {
-          "type": "STRING",
-          "value": "coverage"
+          "value": "Release"
         }
       }
     },
@@ -59,8 +55,7 @@
       ],
       "displayName": "build",
       "description": "build",
-      "toolchainFile": "${sourceDir}/cmake/x86_64-riscv64-gcc.cmake",
-      "binaryDir": "${sourceDir}/build"
+      "toolchainFile": "${sourceDir}/cmake/x86_64-riscv64-gcc.cmake"
     }
   ]
 }
