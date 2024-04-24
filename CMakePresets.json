@@ -44,6 +44,14 @@
         "CMAKE_BUILD_TYPE": {
           "type": "STRING",
           "value": "Release"
+        },
+        "EXECUTABLE_OUTPUT_PATH": {
+          "type": "STRING",
+          "value": "${sourceDir}/build/bin"
+        },
+        "LIBRARY_OUTPUT_PATH": {
+          "type": "STRING",
+          "value": "${sourceDir}/build/lib"
         }
       }
     },
@@ -55,7 +63,7 @@
       ],
       "displayName": "build",
       "description": "build",
-      "toolchainFile": "${sourceDir}/cmake/x86_64-riscv64-gcc.cmake"
+      "toolchainFile": "${sourceDir}/cmake/riscv64-gcc.cmake"
     }
   ]
 }
