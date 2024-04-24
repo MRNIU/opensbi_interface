@@ -36,9 +36,3 @@ jobs:
       - name: Build opensbi_interface
         run: |
           cmake --build build --target opensbi_interface
-
-      - name: Publish
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ${{github.workspace}}/doc/html
