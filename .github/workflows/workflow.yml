@@ -30,4 +30,5 @@ jobs:
 
       - name: Build opensbi_interface
         run: |
+          cmake --preset build
           cmake --build build --target opensbi_interface
